@@ -1646,6 +1646,7 @@
     url.search = '';
     url.searchParams.set('qr', '1');
     url.searchParams.set('e', EVENT_ID);
+    url.searchParams.set('n', state.eventName || 'La mia Sagra');
     // Include l'elenco giorni disponibili: se la sagra dura più giorni,
     // l'ospite potrà scegliere quale prenotare direttamente nel form.
     if (Array.isArray(state.days) && state.days.length > 1) {
@@ -4766,6 +4767,7 @@
           const titleText = el('kioskTitleText');
           if (titleText) titleText.textContent = state.eventName;
         }
+        renderGuestQrCode();
       });
     }
 
@@ -5692,7 +5694,7 @@
       const qrPage = el('qrPublicPage');
       if (qrPage) qrPage.classList.remove('hidden');
       const qrEventTitle = el('qrEventTitle');
-      if (qrEventTitle) qrEventTitle.textContent = state.eventName || 'La mia Sagra';
+      if (qrEventTitle) qrEventTitle.textContent = qrUrlParams.get('n') || state.eventName || 'La mia Sagra';
       if (qrEventTitle && firebaseEnabled) {
         stateDocRef().onSnapshot(snap => {
           const remoteName = snap.exists && snap.data().eventName;
