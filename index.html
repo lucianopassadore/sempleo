@@ -580,7 +580,7 @@
       <h1 id="qrEventTitle" class="text-3xl sm:text-4xl font-black tracking-tight text-white mb-1">La mia Sagra</h1>
       <p class="text-slate-400 text-xs sm:text-sm mb-5">Compila il form per prenotare il tuo tavolo</p>
 
-      <div class="w-full space-y-2.5">
+      <div class="w-full space-y-2.5 text-left">
         <div id="qrDayField" class="hidden">
           <label class="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1">Giorno</label>
           <select id="qrDayInput" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-white focus:outline-orange-500"></select>
@@ -611,14 +611,34 @@
         </div>
       </div>
 
-      <div class="flex gap-2 w-full mt-5">
+      <label class="w-full flex items-start gap-2 mt-4 text-left cursor-pointer">
+        <input type="checkbox" id="qrPrivacyCheck" required class="mt-0.5 shrink-0 w-4 h-4 accent-orange-500">
+        <span class="text-xs text-slate-300">Autorizzo l'utilizzo dei dati personali come da regolamento <span class="text-orange-400">*</span></span>
+      </label>
+
+      <div class="flex gap-2 w-full mt-4">
         <button id="qrSubmitBtn" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-extrabold rounded-2xl py-2.5 uppercase tracking-wider text-sm transition active:scale-95">✅ Invia prenotazione</button>
         <button id="qrCancelBtn" class="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-300 font-bold rounded-2xl py-2.5 uppercase tracking-wider text-sm transition">Chiudi</button>
       </div>
+      <button id="qrPrivacyLinkBtn" type="button" class="text-[11px] text-slate-400 underline mt-3">Utilizzo e trattamento dati personali</button>
       <p id="qrMessage" class="text-green-400 font-bold text-sm mt-3 hidden">✅ La tua prenotazione è andata a buon fine, a breve riceverai un messaggio di conferma. Grazie!</p>
     </div>
     <div class="pb-4 pt-1 text-center">
-      <p class="text-[11px] text-slate-500">Software Sagra 2026</p>
+      <p class="text-[11px] text-slate-500">SEMPLEO 2026</p>
+    </div>
+  </div>
+
+  <!-- MODAL: Privacy -->
+  <div id="qrPrivacyModal" class="hidden fixed inset-0 z-[210] items-center justify-center bg-black/70 backdrop-blur-sm p-4 print:hidden">
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-5 max-w-md w-full shadow-2xl max-h-[85vh] overflow-y-auto text-left">
+      <h3 class="text-lg font-black text-white mb-3">Utilizzo e trattamento dati personali</h3>
+      <div class="text-xs text-slate-300 leading-relaxed space-y-2">
+        <p>Ai sensi del Regolamento (UE) 2016/679 (GDPR) e del D.Lgs. 196/2003 come modificato dal D.Lgs. 101/2018, i dati personali forniti (nome e cognome, numero di telefono e altre informazioni indicate nel form) saranno trattati dal Titolare del trattamento esclusivamente per le finalità di gestione della prenotazione del tavolo, organizzazione del servizio e, se necessario, per comunicazioni relative all'evento (es. conferme, avvisi via WhatsApp/SMS).</p>
+        <p>Il conferimento dei dati è facoltativo ma necessario per poter effettuare la prenotazione: il mancato consenso comporta l'impossibilità di completare la richiesta.</p>
+        <p>I dati non saranno diffusi né ceduti a terzi per finalità commerciali e saranno conservati solo per il tempo necessario allo svolgimento dell'evento, dopodiché saranno cancellati o resi anonimi.</p>
+        <p>In qualsiasi momento è possibile esercitare i diritti previsti dagli artt. 15-22 del GDPR (accesso, rettifica, cancellazione, limitazione, portabilità, opposizione) contattando l'organizzazione dell'evento.</p>
+      </div>
+      <button id="qrPrivacyCloseBtn" class="w-full mt-4 bg-slate-700 hover:bg-slate-600 text-slate-300 font-bold rounded-2xl uppercase tracking-wider text-xs py-2.5 transition">Chiudi</button>
     </div>
   </div>
 
@@ -1742,14 +1762,29 @@
     const dayField = el('qrDayField');
     const dayInput = el('qrDayInput');
     const messageEl = el('qrMessage');
+    const privacyCheck = el('qrPrivacyCheck');
+    const privacyLinkBtn = el('qrPrivacyLinkBtn');
+    const privacyCloseBtn = el('qrPrivacyCloseBtn');
+    const privacyModal = el('qrPrivacyModal');
 
     setupQrDaySelector();
+
+    if (privacyLinkBtn && privacyModal) {
+      privacyLinkBtn.addEventListener('click', () => privacyModal.classList.remove('hidden'));
+    }
+    if (privacyCloseBtn && privacyModal) {
+      privacyCloseBtn.addEventListener('click', () => privacyModal.classList.add('hidden'));
+    }
 
     if (submitBtn) {
       submitBtn.addEventListener('click', () => {
         const name = nameInput ? nameInput.value.trim() : '';
         if (!name) {
           alert('Per favore, inserisci il tuo nome.');
+          return;
+        }
+        if (privacyCheck && !privacyCheck.checked) {
+          alert('Per favore, autorizza l\'utilizzo dei dati personali per continuare.');
           return;
         }
         const phone = phoneInput ? phoneInput.value.trim() : '';
@@ -1791,6 +1826,7 @@
               if (phoneInput) phoneInput.value = '';
               if (timeInput) timeInput.value = '';
               if (stageInput) stageInput.value = '';
+              if (privacyCheck) privacyCheck.checked = false;
               submitBtn.disabled = false;
               submitBtn.textContent = '✅ Invia prenotazione';
               submitBtn.style.display = 'block';
@@ -1816,6 +1852,7 @@
         if (phoneInput) phoneInput.value = '';
         if (timeInput) timeInput.value = '';
         if (stageInput) stageInput.value = '';
+        if (privacyCheck) privacyCheck.checked = false;
       });
     }
   }
