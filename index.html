@@ -5696,8 +5696,8 @@
       if (qrEventTitle && firebaseEnabled) {
         stateDocRef().onSnapshot(snap => {
           const remoteName = snap.exists && snap.data().eventName;
-          qrEventTitle.textContent = remoteName || 'La mia Sagra';
-        });
+          qrEventTitle.textContent = remoteName || state.eventName || 'La mia Sagra';
+        }, e => console.error('Errore sincronizzazione titolo QR', e));
       }
       setupQrEventListeners();
       return;
