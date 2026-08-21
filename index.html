@@ -5693,6 +5693,12 @@
       if (qrPage) qrPage.classList.remove('hidden');
       const qrEventTitle = el('qrEventTitle');
       if (qrEventTitle) qrEventTitle.textContent = state.eventName || 'La mia Sagra';
+      if (qrEventTitle && firebaseEnabled) {
+        stateDocRef().onSnapshot(snap => {
+          const remoteName = snap.exists && snap.data().eventName;
+          qrEventTitle.textContent = remoteName || 'La mia Sagra';
+        });
+      }
       setupQrEventListeners();
       return;
     }
