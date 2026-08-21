@@ -575,7 +575,11 @@
 
   <!-- PAGINA QR PUBBLICA PER OSPITI (nascosta di default) -->
   <div id="qrPublicPage" class="hidden fixed inset-0 z-[200] flex flex-col overflow-y-auto bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-4 print:hidden">
-    <div class="flex-1 flex flex-col items-center text-center max-w-sm mx-auto w-full py-6">
+    <div id="qrClosedMessage" class="hidden flex-1 flex-col items-center justify-center text-center max-w-sm mx-auto w-full py-6">
+      <p class="text-5xl mb-4">✅</p>
+      <h2 class="text-white font-black text-xl mb-2">Puoi chiudere questa pagina</h2>
+    </div>
+    <div id="qrFormWrap" class="flex-1 flex flex-col items-center text-center max-w-sm mx-auto w-full py-6">
       <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Prenotazione</p>
       <h1 id="qrEventTitle" class="text-3xl sm:text-4xl font-black tracking-tight text-white mb-1">La mia Sagra</h1>
       <p class="text-slate-400 text-xs sm:text-sm mb-5">Compila il form per prenotare il tuo tavolo</p>
@@ -669,7 +673,8 @@
 
   <!-- MODAL: Settings -->
   <div id="settingsModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/70 backdrop-blur-sm p-4 print:hidden">
-    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-5 max-w-sm w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-5 max-w-sm w-full shadow-2xl max-h-[90vh] overflow-y-auto relative">
+      <button id="settingsCloseX" class="absolute top-3 right-3 text-slate-400 hover:text-white text-xl leading-none">✕</button>
       <h3 class="text-lg font-black text-white mb-4">⚙️ Impostazioni</h3>
 
       <details class="border-b border-slate-700 pb-4 mb-4">
@@ -1846,14 +1851,17 @@
 
     if (cancelBtn) {
       cancelBtn.addEventListener('click', () => {
-        const qrPage = el('qrPublicPage');
-        if (qrPage) qrPage.classList.add('hidden');
+        const formWrap = el('qrFormWrap');
+        const closedMsg = el('qrClosedMessage');
+        if (formWrap) formWrap.classList.add('hidden');
+        if (closedMsg) { closedMsg.classList.remove('hidden'); closedMsg.classList.add('flex'); }
         if (nameInput) nameInput.value = '';
         if (seatsInput) seatsInput.value = '4';
         if (phoneInput) phoneInput.value = '';
         if (timeInput) timeInput.value = '';
         if (stageInput) stageInput.value = '';
         if (privacyCheck) privacyCheck.checked = false;
+        window.close();
       });
     }
   }
@@ -4872,6 +4880,13 @@
         settingsModal.classList.remove('flex');
       });
     }
+    const settingsCloseX = el('settingsCloseX');
+    if (settingsCloseX && settingsModal) {
+      settingsCloseX.addEventListener('click', () => {
+        settingsModal.classList.add('hidden');
+        settingsModal.classList.remove('flex');
+      });
+    }
     // Gestione giorni evento
     const addDayBtn = el('addDayBtn');
     if (addDayBtn) {
@@ -5688,7 +5703,7 @@
     // QR MODE: Se arriva via QR code, mostra solo il form pubblico
     if (isQrMode) {
       document.body.classList.add('qr-mode');
-      document.querySelectorAll('header, main').forEach(elx => { elx.style.display = 'none'; });
+      document.querySelectorAll('header, main, #kioskFooterAfterList').forEach(elx => { elx.style.display = 'none'; });
       const welcomeScreen = el('welcomeScreen');
       if (welcomeScreen) welcomeScreen.style.display = 'none';
       const qrPage = el('qrPublicPage');
