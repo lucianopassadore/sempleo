@@ -400,7 +400,7 @@
   <!-- Footer pagina: fuori da <main> per non alterarne il layout a flex-row
        su desktop (altrimenti, essendo w-full, si prende una colonna intera
        e schiaccia mappa/elenco a larghezza quasi zero). -->
-  <div id="kioskFooterAfterList" class="hidden w-full text-left text-[11px] text-slate-500 pt-2 pb-4 px-4 sm:px-6 print:hidden">
+  <div id="kioskFooterAfterList" class="hidden w-full text-center text-[11px] text-slate-500 pt-2 pb-4 print:hidden">
     <p class="text-xs font-bold text-slate-300">SEMPLEO</p>
     <p class="text-[10px]">Gestione Eventi</p>
     <p class="mt-1">Idea, progetto e realizzazione by <b class="text-slate-300">Luciano Passadore</b></p>
@@ -543,7 +543,7 @@
       <div class="border-t border-slate-700 mt-4 pt-4">
         <label class="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1">Numero tavolo</label>
         <input type="number" id="newTableNumberInput" min="1" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-orange-500">
-        <label class="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1 mt-3">Nome ospite</label>
+        <label class="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1 mt-3">Nome cliente</label>
         <input type="text" id="newNameInput" placeholder="Es. Famiglia Rossi" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-orange-500">
         <div class="flex gap-3">
           <div class="flex-1">
@@ -551,7 +551,7 @@
             <input type="tel" id="newPhoneInput" placeholder="333 1234567" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-orange-500">
           </div>
           <div class="flex-1">
-            <label class="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1 mt-3">Orario di arrivo</label>
+            <label class="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1 mt-3">Orario</label>
             <input type="time" id="newTimeInput" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-orange-500">
           </div>
         </div>
@@ -575,16 +575,12 @@
 
   <!-- PAGINA QR PUBBLICA PER OSPITI (nascosta di default) -->
   <div id="qrPublicPage" class="hidden fixed inset-0 z-[200] flex flex-col overflow-y-auto bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-4 print:hidden">
-    <div id="qrClosedMessage" class="hidden flex-1 flex-col items-center justify-center text-center max-w-sm mx-auto w-full py-6">
-      <p class="text-5xl mb-4">✅</p>
-      <h2 class="text-white font-black text-xl mb-2">Puoi chiudere questa pagina</h2>
-    </div>
-    <div id="qrFormWrap" class="flex-1 flex flex-col items-center text-center max-w-sm mx-auto w-full py-6">
+    <div class="flex-1 flex flex-col items-center text-center max-w-sm mx-auto w-full py-6">
       <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Prenotazione</p>
       <h1 id="qrEventTitle" class="text-3xl sm:text-4xl font-black tracking-tight text-white mb-1">La mia Sagra</h1>
       <p class="text-slate-400 text-xs sm:text-sm mb-5">Compila il form per prenotare il tuo tavolo</p>
 
-      <div class="w-full space-y-2.5 text-left">
+      <div class="w-full space-y-2.5">
         <div id="qrDayField" class="hidden">
           <label class="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1">Giorno</label>
           <select id="qrDayInput" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-white focus:outline-orange-500"></select>
@@ -615,34 +611,14 @@
         </div>
       </div>
 
-      <label class="w-full flex items-start gap-2 mt-4 text-left cursor-pointer">
-        <input type="checkbox" id="qrPrivacyCheck" required class="mt-0.5 shrink-0 w-4 h-4 accent-orange-500">
-        <span class="text-xs text-slate-300">Autorizzo l'utilizzo dei dati personali come da regolamento <span class="text-orange-400">*</span></span>
-      </label>
-
-      <div class="flex gap-2 w-full mt-4">
+      <div class="flex gap-2 w-full mt-5">
         <button id="qrSubmitBtn" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-extrabold rounded-2xl py-2.5 uppercase tracking-wider text-sm transition active:scale-95">✅ Invia prenotazione</button>
         <button id="qrCancelBtn" class="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-300 font-bold rounded-2xl py-2.5 uppercase tracking-wider text-sm transition">Chiudi</button>
       </div>
-      <button id="qrPrivacyLinkBtn" type="button" class="text-[11px] text-slate-400 underline mt-3">Utilizzo e trattamento dati personali</button>
       <p id="qrMessage" class="text-green-400 font-bold text-sm mt-3 hidden">✅ La tua prenotazione è andata a buon fine, a breve riceverai un messaggio di conferma. Grazie!</p>
     </div>
     <div class="pb-4 pt-1 text-center">
-      <p class="text-[11px] text-slate-500">SEMPLEO 2026</p>
-    </div>
-  </div>
-
-  <!-- MODAL: Privacy -->
-  <div id="qrPrivacyModal" class="hidden fixed inset-0 z-[210] items-center justify-center bg-black/70 backdrop-blur-sm p-4 print:hidden">
-    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-5 max-w-md w-full shadow-2xl max-h-[85vh] overflow-y-auto text-left">
-      <h3 class="text-lg font-black text-white mb-3">Utilizzo e trattamento dati personali</h3>
-      <div class="text-xs text-slate-300 leading-relaxed space-y-2">
-        <p>Ai sensi del Regolamento (UE) 2016/679 (GDPR) e del D.Lgs. 196/2003 come modificato dal D.Lgs. 101/2018, i dati personali forniti (nome e cognome, numero di telefono e altre informazioni indicate nel form) saranno trattati dal Titolare del trattamento esclusivamente per le finalità di gestione della prenotazione del tavolo, organizzazione del servizio e, se necessario, per comunicazioni relative all'evento (es. conferme, avvisi via WhatsApp/SMS).</p>
-        <p>Il conferimento dei dati è facoltativo ma necessario per poter effettuare la prenotazione: il mancato consenso comporta l'impossibilità di completare la richiesta.</p>
-        <p>I dati non saranno diffusi né ceduti a terzi per finalità commerciali e saranno conservati solo per il tempo necessario allo svolgimento dell'evento, dopodiché saranno cancellati o resi anonimi.</p>
-        <p>In qualsiasi momento è possibile esercitare i diritti previsti dagli artt. 15-22 del GDPR (accesso, rettifica, cancellazione, limitazione, portabilità, opposizione) contattando l'organizzazione dell'evento.</p>
-      </div>
-      <button id="qrPrivacyCloseBtn" class="w-full mt-4 bg-slate-700 hover:bg-slate-600 text-slate-300 font-bold rounded-2xl uppercase tracking-wider text-xs py-2.5 transition">Chiudi</button>
+      <p class="text-[11px] text-slate-500">Software Sagra 2026</p>
     </div>
   </div>
 
@@ -673,8 +649,7 @@
 
   <!-- MODAL: Settings -->
   <div id="settingsModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/70 backdrop-blur-sm p-4 print:hidden">
-    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-5 max-w-sm w-full shadow-2xl max-h-[90vh] overflow-y-auto relative">
-      <button id="settingsCloseX" class="absolute top-3 right-3 text-slate-400 hover:text-white text-xl leading-none">✕</button>
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-5 max-w-sm w-full shadow-2xl max-h-[90vh] overflow-y-auto">
       <h3 class="text-lg font-black text-white mb-4">⚙️ Impostazioni</h3>
 
       <details class="border-b border-slate-700 pb-4 mb-4">
@@ -1651,7 +1626,6 @@
     url.search = '';
     url.searchParams.set('qr', '1');
     url.searchParams.set('e', EVENT_ID);
-    url.searchParams.set('n', state.eventName || 'La mia Sagra');
     // Include l'elenco giorni disponibili: se la sagra dura più giorni,
     // l'ospite potrà scegliere quale prenotare direttamente nel form.
     if (Array.isArray(state.days) && state.days.length > 1) {
@@ -1768,29 +1742,14 @@
     const dayField = el('qrDayField');
     const dayInput = el('qrDayInput');
     const messageEl = el('qrMessage');
-    const privacyCheck = el('qrPrivacyCheck');
-    const privacyLinkBtn = el('qrPrivacyLinkBtn');
-    const privacyCloseBtn = el('qrPrivacyCloseBtn');
-    const privacyModal = el('qrPrivacyModal');
 
     setupQrDaySelector();
-
-    if (privacyLinkBtn && privacyModal) {
-      privacyLinkBtn.addEventListener('click', () => privacyModal.classList.remove('hidden'));
-    }
-    if (privacyCloseBtn && privacyModal) {
-      privacyCloseBtn.addEventListener('click', () => privacyModal.classList.add('hidden'));
-    }
 
     if (submitBtn) {
       submitBtn.addEventListener('click', () => {
         const name = nameInput ? nameInput.value.trim() : '';
         if (!name) {
           alert('Per favore, inserisci il tuo nome.');
-          return;
-        }
-        if (privacyCheck && !privacyCheck.checked) {
-          alert('Per favore, autorizza l\'utilizzo dei dati personali per continuare.');
           return;
         }
         const phone = phoneInput ? phoneInput.value.trim() : '';
@@ -1832,7 +1791,6 @@
               if (phoneInput) phoneInput.value = '';
               if (timeInput) timeInput.value = '';
               if (stageInput) stageInput.value = '';
-              if (privacyCheck) privacyCheck.checked = false;
               submitBtn.disabled = false;
               submitBtn.textContent = '✅ Invia prenotazione';
               submitBtn.style.display = 'block';
@@ -1851,17 +1809,13 @@
 
     if (cancelBtn) {
       cancelBtn.addEventListener('click', () => {
-        const formWrap = el('qrFormWrap');
-        const closedMsg = el('qrClosedMessage');
-        if (formWrap) formWrap.classList.add('hidden');
-        if (closedMsg) { closedMsg.classList.remove('hidden'); closedMsg.classList.add('flex'); }
+        const qrPage = el('qrPublicPage');
+        if (qrPage) qrPage.classList.add('hidden');
         if (nameInput) nameInput.value = '';
         if (seatsInput) seatsInput.value = '4';
         if (phoneInput) phoneInput.value = '';
         if (timeInput) timeInput.value = '';
         if (stageInput) stageInput.value = '';
-        if (privacyCheck) privacyCheck.checked = false;
-        window.close();
       });
     }
   }
@@ -4775,7 +4729,6 @@
           const titleText = el('kioskTitleText');
           if (titleText) titleText.textContent = state.eventName;
         }
-        renderGuestQrCode();
       });
     }
 
@@ -4876,13 +4829,6 @@
     }
     if (cancelSettingsBtn && settingsModal) {
       cancelSettingsBtn.addEventListener('click', () => {
-        settingsModal.classList.add('hidden');
-        settingsModal.classList.remove('flex');
-      });
-    }
-    const settingsCloseX = el('settingsCloseX');
-    if (settingsCloseX && settingsModal) {
-      settingsCloseX.addEventListener('click', () => {
         settingsModal.classList.add('hidden');
         settingsModal.classList.remove('flex');
       });
@@ -5703,19 +5649,13 @@
     // QR MODE: Se arriva via QR code, mostra solo il form pubblico
     if (isQrMode) {
       document.body.classList.add('qr-mode');
-      document.querySelectorAll('header, main, #kioskFooterAfterList').forEach(elx => { elx.style.display = 'none'; });
+      document.querySelectorAll('header, main').forEach(elx => { elx.style.display = 'none'; });
       const welcomeScreen = el('welcomeScreen');
       if (welcomeScreen) welcomeScreen.style.display = 'none';
       const qrPage = el('qrPublicPage');
       if (qrPage) qrPage.classList.remove('hidden');
       const qrEventTitle = el('qrEventTitle');
-      if (qrEventTitle) qrEventTitle.textContent = qrUrlParams.get('n') || state.eventName || 'La mia Sagra';
-      if (qrEventTitle && firebaseEnabled) {
-        stateDocRef().onSnapshot(snap => {
-          const remoteName = snap.exists && snap.data().eventName;
-          qrEventTitle.textContent = remoteName || state.eventName || 'La mia Sagra';
-        }, e => console.error('Errore sincronizzazione titolo QR', e));
-      }
+      if (qrEventTitle) qrEventTitle.textContent = state.eventName || 'La mia Sagra';
       setupQrEventListeners();
       return;
     }
